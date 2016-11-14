@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <link href="lib/css/ionic.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body ng-app="myApp">
+
+
+    <ion-nav-view></ion-nav-view>
+
+
+    <script src="lib/js/ionic.bundle.min.js"></script>
+    <script>
+        var app = angular.module("myApp",["ionic"]);
+        app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
+            $stateProvider
+                .state("main",{
+                    url : "/main",
+                    abstract : true,
+                    templateUrl : "view/main.html"
+                })
+                .state("main.home",{
+                    url : "/home",
+                    views : {
+                        "main-home" : {
+                            controller : "homeCtrl",
+                            templateUrl : "view/home.html"
+                        }
+                    }
+                })
+                .state("main.star",{
+                    url : "/star",
+                    views : {
+                        "main-star" : {
+                            controller : "starCtrl",
+                            templateUrl : "view/star.html"
+                        }
+                    }
+                })
+                .state("main.setting",{
+                    url : "/setting",
+                    views : {
+                        "main-setting" : {
+                            controller : "settingCtrl",
+                            templateUrl : "view/setting.html"
+                        }
+                    }
+                });
+
+            $urlRouterProvider.otherwise("/main/home");
+        }]);
+
+        app.controller("homeCtrl",["$scope","$state","$http",function($scope,$state,$http){
+            $scope.next = function(){
+                $state.go("main.star");
+            }
+        }]);
+        app.controller("starCtrl",["$scope","$state",function($scope,$state){
+            $scope.prev = function(){
+                $state.go("main.home");
+            };
+            $scope.next = function(){
+                $state.go("main.setting");
+            };
+        }]);
+        app.controller("settingCtrl",["$scope","$state",function($scope,$state){
+            $scope.prev = function(){
+                $state.go("main.star");
+            }
+        }]);
+    </script>
+</body>
+</html>
